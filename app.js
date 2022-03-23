@@ -7,6 +7,7 @@ const path = require("path"); //importing core module path
 //connecting SQLite database
 const dbPath = path.join(__dirname, "cricketTeam.db"); //path of database
 const sqlite3 = require("sqlite3"); // importing sqlite3 database
+
 let db = null;
 const initializeDBAndServer = async () => {
   try {
@@ -25,3 +26,10 @@ const initializeDBAndServer = async () => {
 };
 
 initializeDBAndServer();
+
+//API 1 : Returns a list of all players in the team
+app.get("/players/", async (request, resolve) => {
+  const getAllPlayersOfTeam = `SELECT * FROM cricket_team;
+    `;
+  const playerArray = await db.all(getAllPlayersOfTeam);
+});
