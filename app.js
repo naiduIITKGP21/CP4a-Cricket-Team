@@ -16,10 +16,9 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    app.listen(3000),
-      () => {
-        console.log("server Running at http://localhost:3000/");
-      };
+    app.listen(3000, () => {
+      console.log("server Running at http://localhost:3000/");
+    });
   } catch (e) {
     console.log("DB Error: ${e.message}");
     process.exit(1);
@@ -27,22 +26,22 @@ const initializeDBAndServer = async () => {
 };
 
 initializeDBAndServer();
- const convertJsonObjectToResponseObject = (dbObject)=>{
-return {
+const convertJsonObjectToResponseObject = (dbObject) => {
+  return {
     playerId: dbObject.player_id,
     playerName: dbObject.player_name,
-    jerseyNumber: dbObject.jersey_number ,
-    role: role
+    jerseyNumber: dbObject.jersey_number,
+    role: dbObject.role,
   };
- };
+};
 
 //API 1 : Returns a list of all players in the team
-app.get("/players/", async (request, resolve) => {
-  const getAllPlayersOfTeam = `SELECT * FROM cricket_team;
-    `;
+app.get("/players/", async (request, response) => {
+  const getAllPlayersOfTeam = `SELECT * FROM cricket_team;`;
   const playersArray = await db.all(getAllPlayersOfTeam);
-  console.log(response);
   response.send(
-      playersArray.map((eachPlayer)=>convertJsonObjectToResponseObject(eachPlayer);)
-  )
+    playersArray.map((eachPlayer) => {
+      convertJsonObjectToResponseObject(eachPlayer);
+    })
+  );
 });
