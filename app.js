@@ -61,3 +61,17 @@ VALUES
   response.send("Player Added to Team");
   console.log("Player is added to the Team");
 });
+
+//API 3 : Returns a player based on a player ID
+app.get("/players/:playerId", async (request, response) => {
+  const { playerId } = request.params;
+  const getPlayerQuery = `SELECT * FROM cricket_team WHERE player_id=${playerId}`;
+  const playerDetails = await db.get(getPlayerQuery);
+  response.send({
+    playerId: playerDetails.player_id,
+    playerName: playerDetails.player_name,
+    jerseyNumber: playerDetails.jersey_number,
+    role: playerDetails.role,
+  });
+  console.log(`playerID ${playerId} details are successfully  returned`);
+});
