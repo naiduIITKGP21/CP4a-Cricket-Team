@@ -75,3 +75,20 @@ app.get("/players/:playerId", async (request, response) => {
   });
   console.log(`playerID ${playerId} details are successfully  returned`);
 });
+
+//API 4 : Updates the details of a player in the team (database) based on the player ID
+app.put("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
+  const playerDetails = request.body;
+  const { playerName, jerseyNumber, role } = playerDetails;
+  const updateplayerDetailsQuery = `UPDATE cricket_team 
+  SET
+  player_name = "${playerName}",
+  jersey_number = ${jerseyNumber},
+  role = "${role}"
+  WHERE player_id = ${playerId};`;
+
+  await db.run(updateplayerDetailsQuery);
+  response.send("Player Details Updated");
+  console.log("Player Details Updated");
+});
