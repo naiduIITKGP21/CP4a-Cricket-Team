@@ -92,3 +92,13 @@ app.put("/players/:playerId/", async (request, response) => {
   response.send("Player Details Updated");
   console.log("Player Details Updated");
 });
+
+//API 5 : Deletes a player from the team (database) based on the player ID
+app.delete("/players/:playerId/", (request, response) => {
+  const { playerId } = request.params;
+  const deletePlayerQuery = `DELETE FROM cricket_team WHERE player_id = ${playerId};`;
+
+  db.run(deletePlayerQuery);
+  response.send("Player Removed");
+  console.log(`Player Removed based on player_id ${playerId}`);
+});
