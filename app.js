@@ -45,4 +45,19 @@ app.get("/players/", async (request, response) => {
       return convertJsonObjectToResponseObject(eachPlayer);
     })
   );
+  console.log("Returned list of all players");
+});
+
+//API 2 : Creates a new player in the team (database)
+app.post("/players/", async (request, response) => {
+  const playerDetails = request.body;
+  const { playerName, jerseyNumber, role } = playerDetails;
+  const addPlayerQuery = `INSERT INTO cricket_team
+(player_name, jersey_number, role)
+VALUES
+("${playerName}", "${jerseyNumber}", "${role}");`;
+
+  await db.run(addPlayerQuery);
+  response.send("Player Added to Team");
+  console.log("Player is added to the Team");
 });
